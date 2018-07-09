@@ -59,6 +59,15 @@ class ArticlesListViewController: UIViewController {
             }
         }
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showArticleDetailes" {
+            let destination = segue.destination as! ArticleDetailsViewController
+            let backButton = UIBarButtonItem()
+            backButton.title = ""
+            destination.navigationItem.backBarButtonItem = backButton
+        }
+    }
 }
 
 extension ArticlesListViewController : UITableViewDelegate, UITableViewDataSource {
@@ -101,6 +110,10 @@ extension ArticlesListViewController : UITableViewDelegate, UITableViewDataSourc
 
         }
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "showArticleDetails", sender: nil)
     }
 }
 
