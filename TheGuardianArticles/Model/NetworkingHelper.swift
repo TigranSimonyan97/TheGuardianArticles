@@ -10,29 +10,39 @@ import Foundation
 
 final class NetworkingHelper {
     
-    private let API_KEY = "api-key=c852c34d-5488-4340-9cfa-91811ca3c4dd&"
-    private let BASE_URL = "https://content.guardianapis.com/search?"
-    private let SHOW_FIELDS = "show-fields=bodyText,thumbnail,headline"
+    private let BASE_URL = "https://content.guardianapis.com/search?api-key=c852c34d-5488-4340-9cfa-91811ca3c4dd&show-fields=bodyText,thumbnail,headline&page-size=20&page="
     
+    private var currentPageIndex = 0
+        
     static let instance = NetworkingHelper()
-
-    private init() {}
 
     let defaultSession = URLSession(configuration: .default)
     var dataTask: URLSessionDataTask?
 
-    func retrieveData(completion: @escaping (_ result: DataModel) -> ()) {
-        
+    private init() {}
+    
+    fileprivate func getCurrentPageIndex() -> Int {
+        currentPageIndex += 1
+        return currentPageIndex
+    }
+    
+    func resetCurrentPageIndex() {
+        currentPageIndex = 0
+    }
+
+    func retrieveData(completion: @escaping ((DataModel)?) -> ()) {
         defer {
             dataTask = nil
         }
         
-        let urlPath = BASE_URL + API_KEY + SHOW_FIELDS
+        let urlPath = "\(BASE_URL)\(getCurrentPageIndex())"
         
         guard let url = URL(string: urlPath) else {
             print("URL error")
             return
         }
+        
+        print(url)
         
         dataTask = defaultSession.dataTask(with: url, completionHandler: { (data, response, error) in
             if error != nil {
@@ -43,6 +53,7 @@ final class NetworkingHelper {
                     let articlesData = try decoder.decode(Dictionary<String, DataModel>.self, from: data!)
                     completion(articlesData["response"]!)
                 } catch let dataError {
+                    completion(nil)
                     print("Data error \(String(describing: dataError.localizedDescription))")
                 }
             }

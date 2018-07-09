@@ -14,7 +14,8 @@ class ArticlesListViewController: UIViewController {
     @IBOutlet weak var refreshControl: UIActivityIndicatorView!
     
     var articles = [ArticleModel]()
-
+    
+    var isLoading = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,17 +35,49 @@ class ArticlesListViewController: UIViewController {
 
     fileprivate func retrieveData() {
         NetworkingHelper.instance.retrieveData { (data) in
-            self.articles = data.results
+            self.articles = data?.results ?? []
             DispatchQueue.main.async {
                 self.articlesTableView.reloadData()
             }
-            print("articles: \(self.articles)")
         }
     }
 
+    fileprivate func loadMore() {
+        if !isLoading {
+            isLoading = true
+            articlesTableView.tableFooterView?.isHidden = false
+            refreshControl.startAnimating()
+            NetworkingHelper.instance.retrieveData { (data) in
+                self.articles += data?.results ?? []
+                
+                DispatchQueue.main.async {
+                    self.articlesTableView.reloadData()
+                    self.isLoading = false
+                    self.refreshControl.stopAnimating()
+                    self.articlesTableView.tableFooterView?.isHidden = true
+                }
+            }
+        }
+    }
 }
 
 extension ArticlesListViewController : UITableViewDelegate, UITableViewDataSource {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let currentOffset = scrollView.contentOffset.y
+        if currentOffset == 0 {
+            articles.removeSubrange(20..<articles.count)
+            articlesTableView.reloadData()
+            NetworkingHelper.instance.resetCurrentPageIndex()
+            return
+        }
+        let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
+        let deltaOffset = maximumOffset - currentOffset
+        
+        if deltaOffset <= 0 {
+            loadMore()
+        }
+    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -59,10 +92,13 @@ extension ArticlesListViewController : UITableViewDelegate, UITableViewDataSourc
         
         cell.articleTitleLabel.text = articles[indexPath.row].webTitle
         
-        NetworkingHelper.instance.retrieveImage(withURL: URL(string: articles[indexPath.row].fields["thumbnail"]!)!) { (imageData) in
-            DispatchQueue.main.async {
-                cell.articlePhotoImageView.image = UIImage(data: imageData)
+        if let urlPath = articles[indexPath.row].fields["thumbnail"] {
+            NetworkingHelper.instance.retrieveImage(withURL: URL(string: urlPath)!) { (imageData) in
+                DispatchQueue.main.async {
+                    cell.articlePhotoImageView.image = UIImage(data: imageData)
+                }
             }
+
         }
         return cell
     }
