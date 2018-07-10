@@ -13,22 +13,26 @@ class ArticleDetailsViewController: UIViewController {
     @IBOutlet weak var articleTitleLabel: UILabel!
     @IBOutlet weak var tagsCollectionView: UICollectionView!
     @IBOutlet weak var articleBodyLabel: UILabel!
-    @IBOutlet weak var mostUsedWordsTableVIew: UITableView!
+    @IBOutlet weak var mostUsedWordsTableView: UITableView!
     @IBOutlet weak var authorNameHolderView: UIView!
     @IBOutlet weak var articleCategoryLabel: UILabel!
     @IBOutlet weak var articlePublishingDateLabe: UILabel!
     
     @IBOutlet weak var tagsCollectionViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var mostUsedWordTableViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var authorNameTopConstraintToBodyText: NSLayoutConstraint!
+    @IBOutlet weak var authorNameTopConstraintToMostUsedWord: NSLayoutConstraint!
     
     var article: ArticleModel!
     
     var tags = [String]()
     
     var mostUsedWords = [String]()
-    var mostUsedWordsCount = [String: Int]()
+    var mostUsedWordsWithCount = [String: Int]()
     
     var widthPerRow: CGFloat = 0.0
+    
+    let wordCellHeight: CGFloat = 50.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,11 +43,13 @@ class ArticleDetailsViewController: UIViewController {
         configureTagsCollectionView()
         tagsCollectionView.reloadData()
         
-        configureMostUsedWordsTableVIew()
 
         authorNameHolderView.layer.cornerRadius = 80.0 / 2 // 80 is height of authorNameHolderView
         
         articleBodyLabel.text = article.fields["bodyText"]
+        
+        prepareMostUsedWords()
+        configureMostUsedWordsTableView()
     }
     
     fileprivate func configureTagsCollectionView() {
@@ -53,10 +59,20 @@ class ArticleDetailsViewController: UIViewController {
         tagsCollectionView.dataSource = self
     }
     
-    fileprivate func configureMostUsedWordsTableVIew() {
-        mostUsedWordsTableVIew.isScrollEnabled = false
-        mostUsedWordsTableVIew.delegate = self
-        mostUsedWordsTableVIew.dataSource = self
+    fileprivate func configureMostUsedWordsTableView() {
+        if mostUsedWords.count == 0 {
+            mostUsedWordsTableView.isHidden = true
+            authorNameTopConstraintToBodyText.isActive = true
+            authorNameTopConstraintToMostUsedWord.isActive = false
+            return
+        } else {
+            mostUsedWordsTableView.estimatedRowHeight = wordCellHeight
+            mostUsedWordsTableView.rowHeight = UITableView.automaticDimension
+            mostUsedWordTableViewHeightConstraint.constant = CGFloat(mostUsedWords.count) * wordCellHeight + mostUsedWordsTableView.sectionHeaderHeight
+        }
+        mostUsedWordsTableView.isScrollEnabled = false
+        mostUsedWordsTableView.delegate = self
+        mostUsedWordsTableView.dataSource = self
     }
 
     fileprivate func wordsCountInText(_ text: String) -> [String: Int] {
@@ -80,6 +96,49 @@ class ArticleDetailsViewController: UIViewController {
         
         return wordsWithCountInText
     }
+    
+    fileprivate func prepareMostUsedWords() {
+        mostUsedWordsWithCount = wordsCountInText(article.fields["bodyText"]!)
+        mostUsedWordsWithCount = mostUsedWordsWithCount.filter({ $1 >= 10 })
+        
+        if mostUsedWordsWithCount.count > 3 {
+            let sortedArrayByWordsCount = mostUsedWordsWithCount.sorted { $0.value > $1.value }[0..<3]
+            for item in sortedArrayByWordsCount {
+                mostUsedWords.append("\(item.key) (\(item.value))")
+            }
+        } else {
+            for (key, value) in mostUsedWordsWithCount {
+                mostUsedWords.append("\(key) (\(value))")
+            }
+        }
+    }
+    
+    fileprivate func highlightSelectedWord(_ word: String) {
+        guard let pattern = try? NSRegularExpression(pattern: word, options: []) else { return }
+        let bodyText = article.fields["bodyText"]!
+
+        let attributedBody = NSMutableAttributedString(string: article.fields["bodyText"]!)
+        
+        let attributes = [NSAttributedString.Key.foregroundColor: UIColor.blue]
+        
+        let matches = pattern.matches(in: bodyText, options: [], range: NSRange(0..<bodyText.count))
+        
+        for match in matches {
+            let wordNextCharacterStartIndex = bodyText.index(bodyText.startIndex, offsetBy: match.range.upperBound)
+            let wordNextCharacterEndIndex = bodyText.index(bodyText.startIndex, offsetBy: match.range.upperBound + 1)
+            let wordPreviousCharacterStartIndex = bodyText.index(bodyText.startIndex, offsetBy: match.range.lowerBound - 1)
+            let wordPreviousCharacterEndIndex = bodyText.index(bodyText.startIndex, offsetBy: match.range.lowerBound)
+            
+            let nextCharacter = bodyText[wordNextCharacterStartIndex..<wordNextCharacterEndIndex]
+            let previousCharacter = bodyText[wordPreviousCharacterStartIndex..<wordPreviousCharacterEndIndex]
+            
+            if nextCharacter == " ", previousCharacter == " " {
+                attributedBody.addAttributes(attributes, range: match.range)
+            } else { continue }
+        }
+
+        self.articleBodyLabel.attributedText = attributedBody
+    }
 }
 
 extension ArticleDetailsViewController : UITableViewDelegate, UITableViewDataSource {
@@ -95,6 +154,15 @@ extension ArticleDetailsViewController : UITableViewDelegate, UITableViewDataSou
         return "Top Word Count:"
     }
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if let view = tableView.headerView(forSection: 0) {
+        view.backgroundColor = .clear
+            return view
+        }
+        
+        return nil
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = "wordsCell"
         var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier)
@@ -103,9 +171,14 @@ extension ArticleDetailsViewController : UITableViewDelegate, UITableViewDataSou
             cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: cellIdentifier)
         }
 
-        let mostUsedWord = mostUsedWords[indexPath.row]
-        cell?.textLabel?.text = "\(mostUsedWord) (\(mostUsedWordsCount[mostUsedWord]!))"
+        cell?.textLabel?.text = mostUsedWords[indexPath.row]
         return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let word = mostUsedWords[indexPath.row].split(separator: " ").first {
+            highlightSelectedWord(String(word))
+        }
     }
 }
 
@@ -138,4 +211,23 @@ extension ArticleDetailsViewController : UICollectionViewDelegate, UICollectionV
         
         return cell
     }
+}
+
+extension String {
+    func indicesOf(string: String) -> [Int] {
+        var indices = [Int]()
+        var searchStartIndex = self.startIndex
+        
+        while searchStartIndex < self.endIndex,
+            let range = self.range(of: string, range: searchStartIndex..<self.endIndex),
+            !range.isEmpty
+        {
+            let index = distance(from: self.startIndex, to: range.lowerBound)
+            indices.append(index)
+            searchStartIndex = range.upperBound
+        }
+        
+        return indices
+    }
+
 }

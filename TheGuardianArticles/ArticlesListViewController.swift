@@ -104,6 +104,7 @@ extension ArticlesListViewController : UITableViewDelegate, UITableViewDataSourc
             NetworkingHelper.instance.retrieveImage(withURL: URL(string: urlPath)!) { (imageData) in
                 DispatchQueue.main.async {
                     cell.articlePhotoImageView.image = UIImage(data: imageData)
+//                    self.articlesTableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.none)
                 }
             }
 

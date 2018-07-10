@@ -92,7 +92,7 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" verticalHuggingPriority="520" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="ZlJ-Lr-aGS">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="447"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="463"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="510" verticalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2fo-AU-ezR">
                                                 <rect key="frame" x="24" y="8" width="327" height="26.5"/>
@@ -157,29 +157,35 @@
                                                     <constraint firstItem="7QF-iE-JqP" firstAttribute="centerX" secondItem="EIS-bU-r59" secondAttribute="centerX" id="xNx-4U-Yqq"/>
                                                 </constraints>
                                             </view>
-                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="520" verticalCompressionResistancePriority="1000" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="0l4-cb-JrM">
+                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="520" verticalCompressionResistancePriority="1000" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="0l4-cb-JrM">
                                                 <rect key="frame" x="24" y="231" width="327" height="128"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="backgroundColor" red="0.87450980389999999" green="0.87450980389999999" blue="0.87450980389999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="128" id="4hv-Yo-KxA"/>
                                                 </constraints>
+                                                <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <prototypes>
-                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="wordsCell" textLabel="V6m-c3-kjp" style="IBUITableViewCellStyleDefault" id="wd8-1y-x5u">
+                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="wordsCell" textLabel="V6m-c3-kjp" rowHeight="44" style="IBUITableViewCellStyleDefault" id="wd8-1y-x5u">
                                                         <rect key="frame" x="0.0" y="28" width="327" height="44"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wd8-1y-x5u" id="4cD-r4-BMB">
-                                                            <rect key="frame" x="0.0" y="0.0" width="327" height="43.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="327" height="44"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
                                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="V6m-c3-kjp">
-                                                                    <rect key="frame" x="15" y="0.0" width="297" height="43.5"/>
+                                                                    <rect key="frame" x="15" y="0.0" width="297" height="44"/>
                                                                     <autoresizingMask key="autoresizingMask"/>
+                                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                                     <color key="textColor" red="0.22528496384620667" green="0.39029389619827271" blue="0.51470381021499634" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                             </subviews>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </tableViewCellContentView>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </tableViewCell>
                                                 </prototypes>
                                             </tableView>
@@ -225,7 +231,7 @@
                                             <constraint firstAttribute="trailing" secondItem="hI5-DO-lkk" secondAttribute="trailing" constant="24" id="g5a-YI-cYR"/>
                                             <constraint firstItem="0l4-cb-JrM" firstAttribute="leading" secondItem="ZlJ-Lr-aGS" secondAttribute="leading" constant="24" id="jVH-Gn-wGr"/>
                                             <constraint firstItem="W7M-rO-FpY" firstAttribute="height" secondItem="EIS-bU-r59" secondAttribute="height" id="lNk-0G-TJp"/>
-                                            <constraint firstAttribute="bottom" secondItem="EIS-bU-r59" secondAttribute="bottom" id="pSk-dR-3yO"/>
+                                            <constraint firstAttribute="bottom" secondItem="EIS-bU-r59" secondAttribute="bottom" constant="16" id="pSk-dR-3yO"/>
                                             <constraint firstItem="EIS-bU-r59" firstAttribute="top" secondItem="0l4-cb-JrM" secondAttribute="bottom" constant="8" id="q8z-x5-0Th"/>
                                             <constraint firstAttribute="trailing" secondItem="7VR-ab-sRf" secondAttribute="trailing" constant="23" id="qYl-UI-bu0"/>
                                         </constraints>
@@ -260,8 +266,10 @@
                         <outlet property="articlePublishingDateLabe" destination="2q7-5a-6C0" id="FVe-cH-KlF"/>
                         <outlet property="articleTitleLabel" destination="2fo-AU-ezR" id="IkH-3L-KAF"/>
                         <outlet property="authorNameHolderView" destination="EIS-bU-r59" id="A7a-72-K9b"/>
+                        <outlet property="authorNameTopConstraintToBodyText" destination="aKc-R5-UQz" id="9v3-0e-cEO"/>
+                        <outlet property="authorNameTopConstraintToMostUsedWord" destination="q8z-x5-0Th" id="SEN-l6-mQf"/>
                         <outlet property="mostUsedWordTableViewHeightConstraint" destination="4hv-Yo-KxA" id="a8j-Ep-YkD"/>
-                        <outlet property="mostUsedWordsTableVIew" destination="0l4-cb-JrM" id="Iel-0S-7LV"/>
+                        <outlet property="mostUsedWordsTableView" destination="0l4-cb-JrM" id="Iel-0S-7LV"/>
                         <outlet property="tagsCollectionView" destination="7VR-ab-sRf" id="XOK-Di-24m"/>
                         <outlet property="tagsCollectionViewHeightConstraint" destination="T5H-bM-LyY" id="cVU-8c-vq1"/>
                     </connections>
