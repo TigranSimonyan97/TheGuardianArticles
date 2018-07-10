@@ -142,7 +142,7 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EIS-bU-r59">
                                                 <rect key="frame" x="295" y="367" width="80" height="80"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WW" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7QF-iE-JqP">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WW" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7QF-iE-JqP">
                                                         <rect key="frame" x="12" y="22" width="56.5" height="36"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -262,6 +262,7 @@
                         <viewLayoutGuide key="safeArea" id="G1J-xH-EqF"/>
                     </view>
                     <connections>
+                        <outlet property="articleAuthorNameLabel" destination="7QF-iE-JqP" id="Ua5-A3-VJD"/>
                         <outlet property="articleBodyLabel" destination="hI5-DO-lkk" id="2B7-5W-1C5"/>
                         <outlet property="articleCategoryLabel" destination="QmA-eP-dpq" id="b2C-HA-Yv8"/>
                         <outlet property="articlePublishingDateLabel" destination="2q7-5a-6C0" id="FVe-cH-KlF"/>

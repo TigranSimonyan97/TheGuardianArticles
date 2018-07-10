@@ -18,7 +18,7 @@ struct ArticleModel : Codable {
     var webUrl: String
     var apiUrl: String
     var fields: [String: String]
-//    var tags: [TagModel]?
+    var tags: [TagModel] = [TagModel]()
     var isHosted: Bool
     var pillarId: String
     var pillarName: String

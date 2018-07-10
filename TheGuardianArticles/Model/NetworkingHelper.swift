@@ -9,8 +9,7 @@
 import Foundation
 
 final class NetworkingHelper {
-    //show-tags=contributor&
-    private let BASE_URL = "https://content.guardianapis.com/search?api-key=c852c34d-5488-4340-9cfa-91811ca3c4dd&show-fields=bodyText,thumbnail,headline&page-size=20&page="
+    private let BASE_URL = "https://content.guardianapis.com/search?api-key=c852c34d-5488-4340-9cfa-91811ca3c4dd&show-fields=bodyText,thumbnail,headline&show-tags=contributor&page-size=20&page="
     
     private var currentPageIndex = 0
         

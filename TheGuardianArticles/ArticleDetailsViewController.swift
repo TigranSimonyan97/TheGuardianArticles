@@ -15,6 +15,7 @@ class ArticleDetailsViewController: UIViewController {
     @IBOutlet weak var articleBodyLabel: UILabel!
     @IBOutlet weak var mostUsedWordsTableView: UITableView!
     @IBOutlet weak var authorNameHolderView: UIView!
+    @IBOutlet weak var articleAuthorNameLabel: UILabel!
     @IBOutlet weak var articleCategoryLabel: UILabel! {
         didSet {
             articleCategoryLabel.lineBreakMode = NSLineBreakMode.byTruncatingMiddle
@@ -56,6 +57,7 @@ class ArticleDetailsViewController: UIViewController {
         
         preparePublicationDate()
         prepareArticleCategory()
+        prepareAuthorName()
     }
     
     fileprivate func configureTagsCollectionView() {
@@ -206,6 +208,18 @@ class ArticleDetailsViewController: UIViewController {
         attributedString.append(textEnd)
         
         return attributedString
+    }
+
+    //MARK: -Work with author name
+    fileprivate func prepareAuthorName() {
+        guard let articleTag = article.tags.first else { return }
+        
+        var authorName = String(articleTag.firstName.uppercased().first!)
+        if articleTag.lastName != nil && articleTag.lastName != "" {
+            authorName = authorName + String(articleTag.lastName!.uppercased().first!)
+        }
+        
+        articleAuthorNameLabel.text = authorName
     }
 
 }

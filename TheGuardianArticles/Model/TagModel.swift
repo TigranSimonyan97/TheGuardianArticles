@@ -15,7 +15,7 @@ struct TagModel: Codable {
     var webUrl: String
     var apiUrl: String
     var references: [String]?
-    var bio: String
+    var bio: String?
     var bylineImageUrl: String?
     var bylineLargeImageUrl: String?
     var firstName: String
