@@ -16,7 +16,7 @@ class ArticleDetailsViewController: UIViewController {
     @IBOutlet weak var mostUsedWordsTableView: UITableView!
     @IBOutlet weak var authorNameHolderView: UIView!
     @IBOutlet weak var articleCategoryLabel: UILabel!
-    @IBOutlet weak var articlePublishingDateLabe: UILabel!
+    @IBOutlet weak var articlePublishingDateLabel: UILabel!
     
     @IBOutlet weak var tagsCollectionViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var mostUsedWordTableViewHeightConstraint: NSLayoutConstraint!
@@ -43,13 +43,14 @@ class ArticleDetailsViewController: UIViewController {
         configureTagsCollectionView()
         tagsCollectionView.reloadData()
         
-
         authorNameHolderView.layer.cornerRadius = 80.0 / 2 // 80 is height of authorNameHolderView
         
         articleBodyLabel.text = article.fields["bodyText"]
         
         prepareMostUsedWords()
         configureMostUsedWordsTableView()
+        
+        preparePublicationDate()
     }
     
     fileprivate func configureTagsCollectionView() {
@@ -113,6 +114,7 @@ class ArticleDetailsViewController: UIViewController {
         }
     }
     
+    //MARK: - Work For Most Used Words
     fileprivate func highlightSelectedWord(_ word: String) {
         guard let pattern = try? NSRegularExpression(pattern: word, options: []) else { return }
         let bodyText = article.fields["bodyText"]!
@@ -138,6 +140,42 @@ class ArticleDetailsViewController: UIViewController {
         }
 
         self.articleBodyLabel.attributedText = attributedBody
+    }
+    
+    //MARK: -Working With Dates
+    
+    fileprivate func preparePublicationDate() {
+        let formatter = DateFormatter()
+        
+        guard let publicationDate = formatter.date(fromSwapiString: article.webPublicationDate) else { return }
+        
+        let currentDate = Date()
+        
+        let calendar = Calendar.current
+        
+        guard let dateDiff = calendar.dateComponents([.second], from: publicationDate, to: currentDate).second else { return }
+        
+        let publicationTime = date(fromSeconds: dateDiff)
+        articlePublishingDateLabel.text = publicationTime
+    }
+    
+    fileprivate func date(fromSeconds seconds: Int) -> String {
+        let time: String
+        
+        switch seconds {
+        case 0...60:
+            time = "Just now"
+        case 61...3600:
+            let minutes = seconds / 60
+            time = "\(minutes) minutes"
+        case 3601...86400:
+            let hours = seconds / 3600
+            time = "\(hours) hours"
+        default:
+            time = "More then one day"
+        }
+        
+        return time
     }
 }
 
@@ -213,21 +251,14 @@ extension ArticleDetailsViewController : UICollectionViewDelegate, UICollectionV
     }
 }
 
-extension String {
-    func indicesOf(string: String) -> [Int] {
-        var indices = [Int]()
-        var searchStartIndex = self.startIndex
-        
-        while searchStartIndex < self.endIndex,
-            let range = self.range(of: string, range: searchStartIndex..<self.endIndex),
-            !range.isEmpty
-        {
-            let index = distance(from: self.startIndex, to: range.lowerBound)
-            indices.append(index)
-            searchStartIndex = range.upperBound
-        }
-        
-        return indices
+extension DateFormatter {
+    func date(fromSwapiString dateString: String) -> Date? {
+        // SWAPI dates look like: "2014-12-10T16:44:31.486000Z"
+        self.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        self.timeZone = TimeZone(abbreviation: "UTC")
+        self.locale = Locale(identifier: "en_US_POSIX")
+        return self.date(from: dateString)
     }
-
 }
+
+

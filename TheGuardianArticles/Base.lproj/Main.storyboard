@@ -263,7 +263,7 @@
                     <connections>
                         <outlet property="articleBodyLabel" destination="hI5-DO-lkk" id="2B7-5W-1C5"/>
                         <outlet property="articleCategoryLabel" destination="QmA-eP-dpq" id="b2C-HA-Yv8"/>
-                        <outlet property="articlePublishingDateLabe" destination="2q7-5a-6C0" id="FVe-cH-KlF"/>
+                        <outlet property="articlePublishingDateLabel" destination="2q7-5a-6C0" id="FVe-cH-KlF"/>
                         <outlet property="articleTitleLabel" destination="2fo-AU-ezR" id="IkH-3L-KAF"/>
                         <outlet property="authorNameHolderView" destination="EIS-bU-r59" id="A7a-72-K9b"/>
                         <outlet property="authorNameTopConstraintToBodyText" destination="aKc-R5-UQz" id="9v3-0e-cEO"/>
