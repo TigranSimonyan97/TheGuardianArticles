@@ -252,6 +252,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="QmA-eP-dpq" firstAttribute="width" relation="lessThanOrEqual" secondItem="q4n-8n-XVS" secondAttribute="width" multiplier="0.5" id="06Y-ue-Bxm"/>
                             <constraint firstItem="ZlJ-Lr-aGS" firstAttribute="width" secondItem="q4n-8n-XVS" secondAttribute="width" id="1Ua-xu-wci"/>
                             <constraint firstItem="77Y-cN-Ql6" firstAttribute="leading" secondItem="G1J-xH-EqF" secondAttribute="leading" id="4tu-da-36Q"/>
                             <constraint firstItem="77Y-cN-Ql6" firstAttribute="top" secondItem="G1J-xH-EqF" secondAttribute="top" id="5gT-py-bqV"/>

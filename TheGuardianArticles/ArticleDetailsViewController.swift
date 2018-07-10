@@ -15,7 +15,11 @@ class ArticleDetailsViewController: UIViewController {
     @IBOutlet weak var articleBodyLabel: UILabel!
     @IBOutlet weak var mostUsedWordsTableView: UITableView!
     @IBOutlet weak var authorNameHolderView: UIView!
-    @IBOutlet weak var articleCategoryLabel: UILabel!
+    @IBOutlet weak var articleCategoryLabel: UILabel! {
+        didSet {
+            articleCategoryLabel.lineBreakMode = NSLineBreakMode.byTruncatingMiddle
+        }
+    }
     @IBOutlet weak var articlePublishingDateLabel: UILabel!
     
     @IBOutlet weak var tagsCollectionViewHeightConstraint: NSLayoutConstraint!
@@ -51,6 +55,7 @@ class ArticleDetailsViewController: UIViewController {
         configureMostUsedWordsTableView()
         
         preparePublicationDate()
+        prepareArticleCategory()
     }
     
     fileprivate func configureTagsCollectionView() {
@@ -177,6 +182,32 @@ class ArticleDetailsViewController: UIViewController {
         
         return time
     }
+    
+    //MARK: -Work with categories
+    
+    fileprivate func prepareArticleCategory() {
+        let articleCategory = article.sectionName
+        
+        let attributedText = append(icon: "golden_badge", to: articleCategory, at: articleCategory.count)
+        articleCategoryLabel.attributedText = attributedText
+    }
+    
+    fileprivate func append(icon imageName:String, to text:String, at possition:Int) -> NSAttributedString {
+        let attachment: NSTextAttachment = NSTextAttachment()
+        attachment.image = UIImage(named: imageName)
+        
+        let attachmentString = NSAttributedString(attachment: attachment)
+        let textStartIndex = text.index(text.startIndex, offsetBy: possition)
+        let textStart = NSMutableAttributedString(string: String(text[..<textStartIndex]) + " ", attributes: nil)
+        let textEnd = NSMutableAttributedString(string: String(text[textStartIndex...]), attributes: nil)
+        
+        let attributedString = textStart
+        attributedString.append(attachmentString)
+        attributedString.append(textEnd)
+        
+        return attributedString
+    }
+
 }
 
 extension ArticleDetailsViewController : UITableViewDelegate, UITableViewDataSource {
@@ -253,7 +284,6 @@ extension ArticleDetailsViewController : UICollectionViewDelegate, UICollectionV
 
 extension DateFormatter {
     func date(fromSwapiString dateString: String) -> Date? {
-        // SWAPI dates look like: "2014-12-10T16:44:31.486000Z"
         self.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         self.timeZone = TimeZone(abbreviation: "UTC")
         self.locale = Locale(identifier: "en_US_POSIX")
