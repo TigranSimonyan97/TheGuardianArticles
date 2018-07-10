@@ -14,6 +14,7 @@ class ArticlesListViewController: UIViewController {
     @IBOutlet weak var refreshControl: UIActivityIndicatorView!
     
     var articles = [ArticleModel]()
+    var selectedArticle: ArticleModel!
     
     var isLoading = false
     
@@ -61,11 +62,9 @@ class ArticlesListViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showArticleDetailes" {
+        if segue.identifier == "showArticleDetails" {
             let destination = segue.destination as! ArticleDetailsViewController
-            let backButton = UIBarButtonItem()
-            backButton.title = ""
-            destination.navigationItem.backBarButtonItem = backButton
+            destination.article = self.selectedArticle
         }
     }
 }
@@ -74,12 +73,12 @@ extension ArticlesListViewController : UITableViewDelegate, UITableViewDataSourc
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let currentOffset = scrollView.contentOffset.y
-        if currentOffset == 0 {
-            articles.removeSubrange(20..<articles.count)
-            articlesTableView.reloadData()
-            NetworkingHelper.instance.resetCurrentPageIndex()
-            return
-        }
+//        if currentOffset == 0 {
+//            articles.removeSubrange(20..<articles.count)
+//            articlesTableView.reloadData()
+//            NetworkingHelper.instance.resetCurrentPageIndex()
+//            return
+//        }
         let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
         let deltaOffset = maximumOffset - currentOffset
         
@@ -113,6 +112,7 @@ extension ArticlesListViewController : UITableViewDelegate, UITableViewDataSourc
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedArticle = articles[indexPath.row]
         performSegue(withIdentifier: "showArticleDetails", sender: nil)
     }
 }

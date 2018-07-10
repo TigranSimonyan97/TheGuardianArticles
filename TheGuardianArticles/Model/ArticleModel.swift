@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct ArticleModel : Codable{
+struct ArticleModel : Codable {
     var id: String
     var type: String
     var sectionId: String
@@ -18,6 +18,7 @@ struct ArticleModel : Codable{
     var webUrl: String
     var apiUrl: String
     var fields: [String: String]
+//    var tags: [TagModel]?
     var isHosted: Bool
     var pillarId: String
     var pillarName: String

@@ -18,6 +18,7 @@
 		98521A1B20F3D6C20061D47D /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98521A1A20F3D6C20061D47D /* DataModel.swift */; };
 		98521A1D20F4076B0061D47D /* ArticleDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98521A1C20F4076B0061D47D /* ArticleDetailsViewController.swift */; };
 		98521A1F20F419420061D47D /* TagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98521A1E20F419420061D47D /* TagCell.swift */; };
+		98521A2120F4850B0061D47D /* TagModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98521A2020F4850B0061D47D /* TagModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		98521A1A20F3D6C20061D47D /* DataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		98521A1C20F4076B0061D47D /* ArticleDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleDetailsViewController.swift; sourceTree = "<group>"; };
 		98521A1E20F419420061D47D /* TagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCell.swift; sourceTree = "<group>"; };
+		98521A2020F4850B0061D47D /* TagModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,13 +68,10 @@
 		985219F320F397BC0061D47D /* TheGuardianArticles */ = {
 			isa = PBXGroup;
 			children = (
-				985219F420F397BC0061D47D /* AppDelegate.swift */,
+				98CCA49020F4A907008EA488 /* SupportingFiles */,
 				985219F620F397BC0061D47D /* ArticlesListViewController.swift */,
 				98521A1C20F4076B0061D47D /* ArticleDetailsViewController.swift */,
 				985219F820F397BC0061D47D /* Main.storyboard */,
-				985219FB20F397C30061D47D /* Assets.xcassets */,
-				985219FD20F397C30061D47D /* LaunchScreen.storyboard */,
-				98521A0020F397C30061D47D /* Info.plist */,
 				98521A1520F3D66A0061D47D /* ArticleCell.swift */,
 				98521A1E20F419420061D47D /* TagCell.swift */,
 				98521A1920F3D6700061D47D /* Model */,
@@ -86,8 +85,20 @@
 				98521A1A20F3D6C20061D47D /* DataModel.swift */,
 				98521A1320F3D6690061D47D /* ArticleModel.swift */,
 				98521A1420F3D66A0061D47D /* NetworkingHelper.swift */,
+				98521A2020F4850B0061D47D /* TagModel.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		98CCA49020F4A907008EA488 /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+				985219F420F397BC0061D47D /* AppDelegate.swift */,
+				985219FB20F397C30061D47D /* Assets.xcassets */,
+				985219FD20F397C30061D47D /* LaunchScreen.storyboard */,
+				98521A0020F397C30061D47D /* Info.plist */,
+			);
+			path = SupportingFiles;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -161,6 +172,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98521A2120F4850B0061D47D /* TagModel.swift in Sources */,
 				985219F720F397BC0061D47D /* ArticlesListViewController.swift in Sources */,
 				98521A1720F3D66A0061D47D /* NetworkingHelper.swift in Sources */,
 				98521A1620F3D66A0061D47D /* ArticleModel.swift in Sources */,
@@ -314,7 +326,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VMZ4T47ZZ9;
-				INFOPLIST_FILE = TheGuardianArticles/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/TheGuardianArticles/SupportingFiles/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -332,7 +344,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VMZ4T47ZZ9;
-				INFOPLIST_FILE = TheGuardianArticles/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/TheGuardianArticles/SupportingFiles/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
