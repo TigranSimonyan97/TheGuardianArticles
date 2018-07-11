@@ -76,6 +76,7 @@ class ArticleDetailsViewController: UIViewController {
             authorNameTopConstraintToBodyText.isActive = true
             return
         } else {
+            authorNameTopConstraintToBodyText.isActive = false
             mostUsedWordsTableView.estimatedRowHeight = wordCellHeight
             mostUsedWordsTableView.rowHeight = UITableView.automaticDimension
             mostUsedWordTableViewHeightConstraint.constant = CGFloat(mostUsedWords.count) * wordCellHeight + mostUsedWordsTableView.sectionHeaderHeight
