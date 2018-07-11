@@ -50,7 +50,7 @@ class ArticleDetailsViewController: UIViewController {
         
         authorNameHolderView.layer.cornerRadius = 80.0 / 2 // 80 is height of authorNameHolderView
         
-        articleBodyLabel.text = article.fields["bodyText"]
+        articleBodyLabel.text = article.fields["bodyText"] != "" ? article.fields["bodyText"] : "There is no text"
         
         prepareMostUsedWords()
         configureMostUsedWordsTableView()
@@ -58,6 +58,7 @@ class ArticleDetailsViewController: UIViewController {
         preparePublicationDate()
         prepareArticleCategory()
         prepareAuthorName()
+        
     }
     
     fileprivate func configureTagsCollectionView() {
@@ -70,8 +71,9 @@ class ArticleDetailsViewController: UIViewController {
     fileprivate func configureMostUsedWordsTableView() {
         if mostUsedWords.count == 0 {
             mostUsedWordsTableView.isHidden = true
-            authorNameTopConstraintToBodyText.isActive = true
             authorNameTopConstraintToMostUsedWord.isActive = false
+            authorNameTopConstraintToBodyText.constant = 16.0
+            authorNameTopConstraintToBodyText.isActive = true
             return
         } else {
             mostUsedWordsTableView.estimatedRowHeight = wordCellHeight
@@ -83,6 +85,9 @@ class ArticleDetailsViewController: UIViewController {
         mostUsedWordsTableView.dataSource = self
     }
 
+    fileprivate func deactivateTableViewConstraints() {
+        
+    }
     fileprivate func wordsCountInText(_ text: String) -> [String: Int] {
         var wordsWithCountInText = [String: Int]()
         var array = text.split(separator: " ")

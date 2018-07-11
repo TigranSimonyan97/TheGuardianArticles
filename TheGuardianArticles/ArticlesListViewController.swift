@@ -16,6 +16,8 @@ class ArticlesListViewController: UIViewController {
     var articles = [ArticleModel]()
     var selectedArticle: ArticleModel!
     
+    var articlesImages = [UIImage]()
+    
     var isLoading = false
     
     override func viewDidLoad() {
@@ -29,8 +31,9 @@ class ArticlesListViewController: UIViewController {
     fileprivate func configureArticlesTableView() {
         articlesTableView.delegate = self
         articlesTableView.dataSource = self
-        articlesTableView.estimatedRowHeight = 50
-        articlesTableView.rowHeight = UITableView.automaticDimension
+        articlesTableView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 10.0, right: 0.0)
+//        articlesTableView.estimatedRowHeight = 150
+//        articlesTableView.rowHeight = UITableView.automaticDimension
         articlesTableView.tableFooterView?.isHidden = true
     }
 
@@ -43,6 +46,19 @@ class ArticlesListViewController: UIViewController {
         }
     }
 
+    fileprivate func retrieveArticlesImages() {
+        for article in articles {
+            if let urlPath = article.fields["thumbnail"] {
+                NetworkingHelper.instance.retrieveImage(withURL: URL(string: urlPath)!) { (imageData) in
+                    self.articlesImages.append(UIImage(data: imageData)!)
+                    DispatchQueue.main.async {
+                        self.articlesTableView.reloadData()
+                    }
+                }
+            }
+        }
+    }
+    
     fileprivate func loadMore() {
         if !isLoading {
             isLoading = true
@@ -62,6 +78,10 @@ class ArticlesListViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let backItem = UIBarButtonItem()
+        backItem.title = ""
+        navigationItem.backBarButtonItem = backItem
+        
         if segue.identifier == "showArticleDetails" {
             let destination = segue.destination as! ArticleDetailsViewController
             destination.article = self.selectedArticle
@@ -73,16 +93,10 @@ extension ArticlesListViewController : UITableViewDelegate, UITableViewDataSourc
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let currentOffset = scrollView.contentOffset.y
-//        if currentOffset == 0 {
-//            articles.removeSubrange(20..<articles.count)
-//            articlesTableView.reloadData()
-//            NetworkingHelper.instance.resetCurrentPageIndex()
-//            return
-//        }
         let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
         let deltaOffset = maximumOffset - currentOffset
         
-        if deltaOffset <= 0 {
+        if deltaOffset <= 20.0 {
             loadMore()
         }
     }
@@ -95,20 +109,25 @@ extension ArticlesListViewController : UITableViewDelegate, UITableViewDataSourc
         return articles.count
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 250
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "articleCell", for: indexPath) as! ArticleCell
         
         cell.articleTitleLabel.text = articles[indexPath.row].webTitle
-        
+
         if let urlPath = articles[indexPath.row].fields["thumbnail"] {
             NetworkingHelper.instance.retrieveImage(withURL: URL(string: urlPath)!) { (imageData) in
                 DispatchQueue.main.async {
-                    cell.articlePhotoImageView.image = UIImage(data: imageData)
-//                    self.articlesTableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.none)
+                    if let cell = tableView.cellForRow(at: indexPath) as? ArticleCell {
+                        cell.articlePhotoImageView.image = UIImage(data: imageData)
+                    }
                 }
             }
-
         }
+
         return cell
     }
     

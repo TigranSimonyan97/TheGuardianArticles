@@ -41,8 +41,6 @@ final class NetworkingHelper {
             return
         }
         
-        print(url)
-        
         dataTask = defaultSession.dataTask(with: url, completionHandler: { (data, response, error) in
             if error != nil {
                 print("DataTask error: \(String(describing: error?.localizedDescription))")
